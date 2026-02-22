@@ -19,12 +19,15 @@ const ExpenseSchema = new mongoose.Schema(
     attendeeCount: {type: Number, required: true, min: 1},
     perHead: {type: Number, default: 0},
     note: {type: String, default: "", trim: true, maxlength: 300},
+    universal: {
+      type: Boolean,
+      default: false,
+    },
   },
   {timestamps: true},
 );
 
-// Auto-calculate perHead before save
-ExpenseSchema.pre("save", async function () {
+ExpenseSchema.pre("save", function () {
   if (this.attendeeCount > 0) {
     this.perHead = Math.round(this.amount / this.attendeeCount);
   }

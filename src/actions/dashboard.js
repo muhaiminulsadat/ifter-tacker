@@ -149,12 +149,15 @@ export async function getDashboard(ramadanDay) {
   members.forEach((m) => {
     owed[m._id.toString()] = 0;
   });
+  
   expenses.forEach((expense) => {
     const absentOnDay = absentByDay[expense.ramadanDay] ?? new Set();
-    const attendees = members.filter((m) => !absentOnDay.has(m._id.toString()));
-    if (!attendees.length) return;
-    const perHead = expense.amount / attendees.length;
-    attendees.forEach((m) => {
+    const splitGroup = expense.universal
+      ? members
+      : members.filter((m) => !absentOnDay.has(m._id.toString()));
+    if (!splitGroup.length) return;
+    const perHead = expense.amount / splitGroup.length;
+    splitGroup.forEach((m) => {
       owed[m._id.toString()] += perHead;
     });
   });

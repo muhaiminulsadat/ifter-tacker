@@ -16,14 +16,18 @@ export default function AddExpenseModal({members, currentDay}) {
   const [attendeeCount, setAttendeeCount] = useState(null);
   const [loadingCount, setLoadingCount] = useState(false);
   const [amount, setAmount] = useState("");
+  const [isUniversal, setIsUniversal] = useState(false);
 
+  // When universal: split by all members. When not: split by attending only.
+  const splitCount = isUniversal ? members.length : attendeeCount;
   const perHead =
-    amount && attendeeCount ? Math.round(Number(amount) / attendeeCount) : 0;
+    amount && splitCount ? Math.round(Number(amount) / splitCount) : 0;
 
   const open = () => dialogRef.current?.showModal();
   const close = () => {
     dialogRef.current?.close();
     setAmount("");
+    setIsUniversal(false);
   };
 
   useEffect(() => {
@@ -43,7 +47,10 @@ export default function AddExpenseModal({members, currentDay}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    formData.set("attendeeCount", String(attendeeCount));
+    formData.set(
+      "attendeeCount",
+      String(isUniversal ? members.length : attendeeCount),
+    );
 
     startTransition(async () => {
       try {
@@ -174,6 +181,7 @@ export default function AddExpenseModal({members, currentDay}) {
               </select>
             </fieldset>
 
+            {/* Attendance / split preview */}
             <div
               className="rounded-xl p-3 border border-primary/15 flex items-center gap-3"
               style={{background: "rgba(201,168,76,0.05)"}}
@@ -185,6 +193,18 @@ export default function AddExpenseModal({members, currentDay}) {
                     <Loader2 size={12} className="animate-spin" /> Fetching
                     attendance…
                   </span>
+                ) : isUniversal ? (
+                  <>
+                    Split among{" "}
+                    <span className="text-primary font-bold">
+                      all {members.length} members
+                    </span>
+                    {perHead > 0 && (
+                      <span className="ml-2 text-base-content/40">
+                        → ৳{perHead}/head
+                      </span>
+                    )}
+                  </>
                 ) : (
                   <>
                     <span className="text-primary font-bold">
@@ -199,6 +219,33 @@ export default function AddExpenseModal({members, currentDay}) {
                   </>
                 )}
               </div>
+            </div>
+
+            {/* Universal toggle */}
+            <div
+              className="rounded-xl p-3 border border-secondary/30 flex items-center justify-between gap-3"
+              style={{background: "rgba(13,26,53,0.4)"}}
+            >
+              <div>
+                <p className="text-sm font-bold text-base-content">
+                  Universal Item
+                </p>
+                <p className="text-[11px] text-base-content/40 mt-0.5">
+                  Split among <strong>all members</strong> regardless of
+                  attendance (e.g. dates, water)
+                </p>
+              </div>
+              <input
+                type="hidden"
+                name="universal"
+                value={isUniversal ? "true" : "false"}
+              />
+              <input
+                type="checkbox"
+                className="toggle toggle-primary toggle-sm"
+                checked={isUniversal}
+                onChange={(e) => setIsUniversal(e.target.checked)}
+              />
             </div>
 
             <fieldset className="fieldset gap-1.5">

@@ -47,6 +47,7 @@ export async function getExpenses() {
       attendeeCount: e.attendeeCount,
       perHead: e.perHead,
       note: e.note ?? "",
+      universal: e.universal ?? false,
       createdAt: e.createdAt.toISOString(),
     };
   });
@@ -136,6 +137,7 @@ export async function addExpense(formData) {
     const ramadanDay = Number(formData.get("ramadanDay"));
     const attendeeCount = Number(formData.get("attendeeCount"));
     const note = formData.get("note") ?? "";
+    const universal = formData.get("universal") === "true";
 
     // Validation
     if (
@@ -157,6 +159,7 @@ export async function addExpense(formData) {
       ramadanDay,
       attendeeCount,
       note,
+      universal,
     });
 
     revalidatePath("/dashboard/expenses");

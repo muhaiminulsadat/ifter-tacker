@@ -159,10 +159,18 @@ export default function ExpensesClient({
                       >
                         {e.category}
                       </span>
+                      {e.universal && (
+                        <span className="badge badge-xs badge-primary font-bold">
+                          Universal
+                        </span>
+                      )}
                     </div>
                     <div className="text-[10px] text-base-content/40 mt-0.5">
                       Day {e.ramadanDay} · paid by {e.paidByName} ·{" "}
-                      {e.attendeeCount} people · ৳{e.perHead}/head
+                      {e.universal
+                        ? "all members"
+                        : `${e.attendeeCount} attending`}{" "}
+                      · ৳{e.perHead}/head
                       {e.note && (
                         <span className="ml-1 italic">
                           &ldquo;{e.note}&rdquo;

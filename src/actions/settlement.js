@@ -110,15 +110,16 @@ export async function getSettlement() {
 
   expenses.forEach((expense) => {
     const day = expense.ramadanDay;
-    const absentOnDay = absentByDay[day] ?? new Set();
 
-    const attendees = members.filter((m) => !absentOnDay.has(m._id.toString()));
+    const splitGroup = expense.universal
+      ? members
+      : members.filter(
+          (m) => !(absentByDay[day] ?? new Set()).has(m._id.toString()),
+        );
 
-    if (attendees.length === 0) return;
-
-    const perHead = expense.amount / attendees.length;
-
-    attendees.forEach((m) => {
+    if (splitGroup.length === 0) return;
+    const perHead = expense.amount / splitGroup.length;
+    splitGroup.forEach((m) => {
       owed[m._id.toString()] += perHead;
     });
   });
