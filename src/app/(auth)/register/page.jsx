@@ -61,7 +61,7 @@ export default function RegisterPage() {
   function validate() {
     const errs = {};
     if (!form.name.trim()) errs.name = "Name is required.";
-    else if (form.name.trim().split(" ").filter(Boolean).length < 2)
+    else if (form.name.trim().split(" ").filter(Boolean).length < 1)
       errs.name = "Please enter your full name.";
     if (!form.email.trim()) errs.email = "Email is required.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
@@ -92,7 +92,7 @@ export default function RegisterPage() {
       });
       if (error) throw new Error(error.message ?? "Registration failed.");
       toast.success("Account created! Welcome to Noor 🌙");
-      router.push("/dashboard");
+      router.push("/pending");
       router.refresh();
     } catch (err) {
       toast.error(err.message);

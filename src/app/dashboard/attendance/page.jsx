@@ -2,8 +2,9 @@ import {getAttendanceForDay} from "@/actions/attendance";
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
 import AttendanceClient from "./AttendanceClient";
+import {getRamadanDay} from "@/utils/ramadan";
 
-const TODAY_RAMADAN_DAY = 17;
+const TODAY_RAMADAN_DAY = getRamadanDay();
 
 export default async function AttendancePage() {
   const session = await auth.api.getSession({headers: await headers()});

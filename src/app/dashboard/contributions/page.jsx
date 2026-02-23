@@ -2,12 +2,13 @@ import {getContributions} from "@/actions/contribution";
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
 import ContributionsClient from "./ContributionsClient";
-
-const TODAY_RAMADAN_DAY = 17;
+import {getRamadanDay} from "@/utils/ramadan";
 
 export default async function ContributionsPage() {
   const session = await auth.api.getSession({headers: await headers()});
   const {log, perMember, totalCollected} = await getContributions();
+
+  const TODAY_RAMADAN_DAY = getRamadanDay();
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">

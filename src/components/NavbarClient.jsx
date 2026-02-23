@@ -46,20 +46,26 @@ export default function NavbarClient({user}) {
       .toUpperCase() ||
     "??";
 
+  const {data: session} = authClient.useSession();
+
   return (
     <div className="flex items-center gap-2">
-      <Link
-        href="/dashboard"
-        className="hidden sm:flex items-center gap-2 btn btn-sm font-bold rounded-xl"
-        style={{
-          background: "rgba(30,58,110,0.4)",
-          border: "1px solid rgba(30,58,110,0.7)",
-          color: "rgba(232,212,139,0.8)",
-        }}
-      >
-        <LayoutDashboard size={14} />
-        Dashboard
-      </Link>
+      {!session?.user?.isApproved ? (
+        ""
+      ) : (
+        <Link
+          href="/dashboard"
+          className="hidden sm:flex items-center gap-2 btn btn-sm font-bold rounded-xl"
+          style={{
+            background: "rgba(30,58,110,0.4)",
+            border: "1px solid rgba(30,58,110,0.7)",
+            color: "rgba(232,212,139,0.8)",
+          }}
+        >
+          <LayoutDashboard size={14} />
+          Dashboard
+        </Link>
+      )}
 
       <div ref={ref} className="relative">
         <button

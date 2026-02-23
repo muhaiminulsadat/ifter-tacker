@@ -271,7 +271,9 @@ export default function AddExpenseModal({members, currentDay}) {
               </button>
               <button
                 type="submit"
-                disabled={isPending || loadingCount || !attendeeCount}
+                disabled={
+                  isPending || loadingCount || (!isUniversal && !attendeeCount)
+                }
                 className="btn btn-primary flex-1 rounded-xl font-bold gap-2"
               >
                 {isPending && <Loader2 size={15} className="animate-spin" />}

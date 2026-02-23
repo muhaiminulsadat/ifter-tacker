@@ -61,7 +61,7 @@ export async function getDashboard(ramadanDay) {
   const session = await getSession();
 
   const members = await User.find(
-    {groupId: session.user.groupId},
+    {groupId: session.user.groupId, isApproved: true},
     "_id name avatar room role",
   ).lean();
 
@@ -149,7 +149,7 @@ export async function getDashboard(ramadanDay) {
   members.forEach((m) => {
     owed[m._id.toString()] = 0;
   });
-  
+
   expenses.forEach((expense) => {
     const absentOnDay = absentByDay[expense.ramadanDay] ?? new Set();
     const splitGroup = expense.universal

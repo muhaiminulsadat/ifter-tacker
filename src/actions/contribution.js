@@ -18,7 +18,7 @@ export async function getContributions() {
   const session = await getSession();
 
   const members = await User.find(
-    {groupId: session.user.groupId},
+    {groupId: session.user.groupId, isApproved: true},
     "_id name room avatar",
   ).lean();
 

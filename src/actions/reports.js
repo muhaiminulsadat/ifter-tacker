@@ -7,6 +7,7 @@ import User from "@/model/user.model";
 import Contribution from "@/model/contribution.model";
 import Expense from "@/model/expense.model";
 import Attendance from "@/model/attendence.model";
+import mongoose from "mongoose";
 
 async function getSession() {
   const session = await auth.api.getSession({headers: await headers()});
@@ -36,8 +37,9 @@ export async function getReports() {
     Attendance.find({userId: {$in: userIds}}).lean(),
   ]);
 
+  console.log(contributions);
 
-  const dailyMap = {}; 
+  const dailyMap = {};
   contributions.forEach((c) => {
     if (!dailyMap[c.ramadanDay])
       dailyMap[c.ramadanDay] = {day: c.ramadanDay, contributed: 0, spent: 0};
@@ -50,7 +52,6 @@ export async function getReports() {
   });
   const dailyOverview = Object.values(dailyMap).sort((a, b) => a.day - b.day);
 
-
   const categoryMap = {};
   expenses.forEach((e) => {
     categoryMap[e.category] = (categoryMap[e.category] ?? 0) + e.amount;
@@ -58,7 +59,6 @@ export async function getReports() {
   const categoryBreakdown = Object.entries(categoryMap)
     .map(([name, value]) => ({name, value}))
     .sort((a, b) => b.value - a.value);
-
 
   const contribByMember = {};
   members.forEach((m) => {
@@ -68,18 +68,23 @@ export async function getReports() {
       total: 0,
     };
   });
+
   contributions.forEach((c) => {
-    contribByMember[c.userId.toString()].total += c.amount;
+    const userIdStr = c.userId?._id?.toString() ?? c.userId?.toString();
+    if (contribByMember[userIdStr]) {
+      contribByMember[userIdStr].total += Number(c.amount) || 0;
+    }
   });
+
   const memberContributions = Object.values(contribByMember).sort(
     (a, b) => b.total - a.total,
   );
-
 
   const absentByMember = {};
   members.forEach((m) => {
     absentByMember[m._id.toString()] = 0;
   });
+
   attendanceRecords.forEach((a) => {
     if (a.status === "absent") absentByMember[a.userId.toString()]++;
   });
@@ -103,7 +108,6 @@ export async function getReports() {
     })
     .sort((a, b) => b.rate - a.rate);
 
-
   const attendingByDay = {};
   const totalMembers = members.length;
   attendanceRecords.forEach((a) => {
@@ -121,7 +125,6 @@ export async function getReports() {
   const dailyAttendance = Object.values(attendingByDay).sort(
     (a, b) => a.day - b.day,
   );
-
 
   const totalContributed = contributions.reduce((s, c) => s + c.amount, 0);
   const totalSpent = expenses.reduce((s, e) => s + e.amount, 0);

@@ -63,11 +63,18 @@ export async function getSettlement() {
   const session = await getSession();
 
   const members = await User.find(
-    {groupId: session.user.groupId},
+    {groupId: session.user.groupId, isApproved: true},
     "_id name room avatar",
   ).lean();
 
-  if (!members.length) return {members: [], transactions: [], summary: []};
+  if (!members.length)
+    return {
+      summary: [],
+      transactions: [],
+      totalContributed: 0,
+      totalExpenses: 0,
+      surplus: 0,
+    };
 
   const userIds = members.map((m) => m._id);
   const memberMap = {};

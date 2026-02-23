@@ -9,7 +9,11 @@ const client = mongooseInstance.connection.getClient();
 const db = client.db();
 
 export const auth = betterAuth({
-  trustedOrigins: ["http://192.168.0.103:3000"],
+  trustedOrigins: [
+    "http://192.168.0.103:3000",
+    "http://10.18.88.186:3000",
+    "*",
+  ],
   database: mongodbAdapter(db, {
     client,
   }),
@@ -28,13 +32,15 @@ export const auth = betterAuth({
       },
       room: {
         type: "string",
-        default: "",
+        defaultValue: "",
       },
       avatar: {
         type: "string",
-        default: "",
-        input: true,
+        defaultValue: "",
+        input: false,
       },
+      isApproved: {type: "boolean", defaultValue: false},
+      image: {type: "string", defaultValue: ""},
     },
   },
   session: {
@@ -46,6 +52,15 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async (user) => {},
+      },
+      before: async (user) => {
+        const seed = encodeURIComponent(user.email);
+        return {
+          data: {
+            ...user,
+            avatar: `https://api.dicebear.com/9.x/avataaars/svg?seed=${seed}`,
+          },
+        };
       },
     },
   },

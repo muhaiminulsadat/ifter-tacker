@@ -6,8 +6,9 @@ import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import Stars from "@/components/layout/Stars";
 import {useGetCurrentUser, useNotLoggedIn} from "@/hooks/auth-hooks";
+import {getRamadanDay} from "@/utils/ramadan";
 
-const RAMADAN_DAY = 17;
+const RAMADAN_DAY = getRamadanDay();
 const IFTAR_TIME = "6:24 PM";
 const SIDEBAR_BREAKPOINT = 1024;
 

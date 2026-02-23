@@ -31,6 +31,8 @@ export default async function ReportsPage() {
     stats,
   } = await getReports();
 
+  console.log(stats);
+
   return (
     <div className="min-h-screen bg-base-100 text-base-content p-4 md:p-8 fade-up">
       {/* ── Page header ── */}

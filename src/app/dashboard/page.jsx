@@ -14,8 +14,12 @@ import {
   Pin,
   Moon,
 } from "lucide-react";
+import {getRamadanDay} from "@/utils/ramadan";
+import {useNotLoggedIn} from "@/hooks/auth-hooks";
+import {getCurrentUser} from "@/lib/auth";
+import {redirect} from "next/navigation";
 
-const CURRENT_RAMADAN_DAY = 1;
+const CURRENT_RAMADAN_DAY = getRamadanDay();
 
 export const metadata = {
   title: "Dashboard · Noor",
@@ -84,6 +88,16 @@ export default async function DashboardPage() {
     currentUserBalance,
     announcements,
   } = await getDashboard(CURRENT_RAMADAN_DAY);
+
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    redirect("/login");
+  }
+
+  if (currentUser && !currentUser?.isApproved) {
+    redirect("/pending");
+  }
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content p-4 md:p-8 fade-up">

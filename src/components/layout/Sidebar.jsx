@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import {GoReport} from "react-icons/go";
 import {MdReportOff} from "react-icons/md";
+import Image from "next/image";
 
 // ─── Nav Items ────────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
@@ -272,7 +273,11 @@ export default function Sidebar({open, onClose, user, ramadanDay, iftarTime}) {
                 flexShrink: 0,
               }}
             >
-              {user?.avatar ?? "??"}
+              {user?.image ? (
+                <Image src={user?.image} alt="avatar" height={20} width={20} />
+              ) : (
+                user?.avatar || "??"
+              )}
             </div>
 
             {/* Info */}

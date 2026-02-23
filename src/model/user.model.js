@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema(
     emailVerified: {type: Boolean, default: false},
     image: {type: String, default: ""},
 
-    // Custom fields
+    isApproved: {type: Boolean, default: false},
     role: {type: String, enum: ["admin", "member"], default: "member"},
     room: {type: String, trim: true, default: ""},
     avatar: {type: String, default: ""}, // auto-generated initials e.g "RA"
@@ -24,8 +24,9 @@ const UserSchema = new mongoose.Schema(
   },
 );
 
-// Auto-generate avatar initials from name
 UserSchema.pre("save", function (next) {
+  if (this.role === "admin") this.isApproved = true;
+
   if (this.isModified("name") || this.isNew) {
     const parts = this.name.trim().split(" ");
     this.avatar =
@@ -34,6 +35,9 @@ UserSchema.pre("save", function (next) {
         : parts[0].slice(0, 2).toUpperCase();
   }
 
+  if (this.isNew) {
+    this.image = `https://api.dicebear.com/7.x/avataaars/svg?seed=${this._id}`;
+  }
 });
 
 const User = mongoose.models.user || mongoose.model("user", UserSchema);
