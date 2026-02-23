@@ -20,8 +20,7 @@ export default function AddExpenseModal({members, currentDay}) {
 
   // When universal: split by all members. When not: split by attending only.
   const splitCount = isUniversal ? members.length : attendeeCount;
-  const perHead =
-    amount && splitCount ? Math.round(Number(amount) / splitCount) : 0;
+  const perHead = amount && splitCount ? Number(amount) / splitCount : 0;
 
   const open = () => dialogRef.current?.showModal();
   const close = () => {
@@ -201,7 +200,7 @@ export default function AddExpenseModal({members, currentDay}) {
                     </span>
                     {perHead > 0 && (
                       <span className="ml-2 text-base-content/40">
-                        → ৳{perHead}/head
+                        → ৳{perHead.toFixed(2)}/head
                       </span>
                     )}
                   </>

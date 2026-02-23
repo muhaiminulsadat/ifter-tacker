@@ -97,7 +97,7 @@ export async function getReports() {
       const absent = absentByMember[m._id.toString()];
       const attended = Math.max(0, daysTracked - absent);
       const rate =
-        daysTracked > 0 ? Math.round((attended / daysTracked) * 100) : 100;
+        daysTracked > 0 ? (attended / daysTracked)* 100 : 100;
       return {
         name: m.name,
         avatar: m.avatar,
@@ -131,7 +131,7 @@ export async function getReports() {
   const totalExpenseCount = expenses.length;
   const avgDailySpend =
     dailyOverview.length > 0
-      ? Math.round(totalSpent / dailyOverview.length)
+      ? (totalSpent / dailyOverview.length)
       : 0;
 
   return {
@@ -141,9 +141,9 @@ export async function getReports() {
     memberAttendance,
     dailyAttendance,
     stats: {
-      totalContributed: Math.round(totalContributed),
-      totalSpent: Math.round(totalSpent),
-      surplus: Math.round(totalContributed - totalSpent),
+      totalContributed: totalContributed,
+      totalSpent: totalSpent,
+      surplus: (totalContributed - totalSpent),
       avgDailySpend,
       totalExpenseCount,
       daysTracked,

@@ -44,7 +44,7 @@ function simplifyDebts(balances) {
         to: credit.userId,
         toName: credit.name,
         toAvatar: credit.avatar,
-        amount: Math.round(amount),
+        amount: amount,
       });
     }
 
@@ -148,9 +148,9 @@ export async function getSettlement() {
       name: m.name,
       room: m.room,
       avatar: m.avatar,
-      contributed: Math.round(contrib),
-      expenseShare: Math.round(share),
-      balance: Math.round(balance),
+      contributed: contrib,
+      expenseShare: share,
+      balance: balance,
     };
   });
 
@@ -166,8 +166,8 @@ export async function getSettlement() {
   return {
     summary,
     transactions,
-    totalContributed: Math.round(totalContributed),
-    totalExpenses: Math.round(totalExpenses),
-    surplus: Math.round(totalContributed - totalExpenses),
+    totalContributed: totalContributed,
+    totalExpenses: totalExpenses,
+    surplus: totalContributed - totalExpenses,
   };
 }

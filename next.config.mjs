@@ -4,7 +4,12 @@ const nextConfig = {
     appIsrStatus: false,
   },
   experimental: {
-    allowedDevOrigins: ["192.168.0.103:3000", "localhost:3000"],
+    allowedDevOrigins: [
+      "192.168.0.103:3000",
+      "localhost:3000",
+      "192.168.0.104:3000",
+      "*",
+    ],
   },
 
   images: {

@@ -29,7 +29,7 @@ const ExpenseSchema = new mongoose.Schema(
 
 ExpenseSchema.pre("save", function () {
   if (this.attendeeCount > 0) {
-    this.perHead = Math.round(this.amount / this.attendeeCount);
+    this.perHead = (this.amount / this.attendeeCount);
   }
 });
 

@@ -190,7 +190,7 @@ export function CategoryChart({data}) {
       {/* Legend */}
       <div className="flex flex-col gap-2 flex-1 min-w-0">
         {data.map((d, i) => {
-          const pct = Math.round((d.value / total) * 100);
+          const pct = ((d.value / total) * 100).toFixed(2);
           return (
             <div key={d.name} className="flex items-center gap-2">
               <div

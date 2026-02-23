@@ -33,14 +33,14 @@ function BalanceBadge({balance}) {
     return (
       <span className="flex items-center gap-1 text-success font-bold text-sm">
         <TrendingUp size={14} />
-        +৳{balance}
+        +৳{balance.toFixed(2)}
       </span>
     );
   if (balance < 0)
     return (
       <span className="flex items-center gap-1 text-error font-bold text-sm">
         <TrendingDown size={14} />
-        -৳{Math.abs(balance)}
+        -৳{Math.abs(balance).toFixed(2)}
       </span>
     );
   return (
@@ -273,7 +273,7 @@ function MemberRow({member, isLast}) {
 
       {/* Expense share */}
       <p className="text-right font-semibold text-sm text-base-content/60">
-        ৳{expenseShare.toLocaleString()}
+        ৳{expenseShare.toFixed(2)}
       </p>
 
       {/* Balance */}

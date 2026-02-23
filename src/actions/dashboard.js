@@ -43,7 +43,7 @@ function simplifyDebts(balances) {
         to: credit.userId,
         toName: credit.name,
         toAvatar: credit.avatar,
-        amount: Math.round(amount),
+        amount: Number(amount),
       });
     }
 
@@ -176,7 +176,7 @@ export async function getDashboard(ramadanDay) {
       userId: id,
       name: m.name,
       avatar: m.avatar,
-      balance: Math.round(contributed[id] - owed[id]),
+      balance: Number(contributed[id] - owed[id]),
     };
   });
 
@@ -202,12 +202,12 @@ export async function getDashboard(ramadanDay) {
       role: session.user.role,
     },
     stats: {
-      totalContributed: Math.round(totalContributed),
-      totalSpent: Math.round(totalSpent),
-      surplus: Math.round(totalContributed - totalSpent),
+      totalContributed: Number(totalContributed.toFixed(2)),
+      totalSpent: Number(totalSpent.toFixed(2)),
+      surplus: Number((totalContributed - totalSpent).toFixed(2)),
       totalMembers: members.length,
       attendingToday,
-      pendingSettlements: pendingTransactions.length,
+      pendingSettlements: pendingTransactions?.length,
     },
     todayAttendanceList,
     recentContributions,

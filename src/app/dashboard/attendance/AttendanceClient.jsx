@@ -16,6 +16,7 @@ export default function AttendanceClient({
   ramadanDay,
   currentUserId,
   isAdmin,
+  onRefresh,
 }) {
   const [isPending, startTransition] = useTransition();
   const [loadingId, setLoadingId] = useState(null);
@@ -34,6 +35,7 @@ export default function AttendanceClient({
         toast.success(
           status === "attending" ? "Marked as attending ✓" : "Marked as absent",
         );
+        onRefresh?.();
       } catch {
         toast.error("Failed to update. Try again.");
       } finally {
