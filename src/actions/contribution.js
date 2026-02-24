@@ -41,6 +41,7 @@ export async function getContributions() {
       room: m.room,
       avatar: m.avatar,
       total: 0,
+      image: m.image,
     };
   });
 

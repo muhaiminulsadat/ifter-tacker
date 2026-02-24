@@ -274,7 +274,13 @@ export default function Sidebar({open, onClose, user, ramadanDay, iftarTime}) {
               }}
             >
               {user?.image ? (
-                <Image src={user?.image} alt="avatar" height={20} width={20} />
+                <Image
+                  src={user?.image}
+                  alt="avatar"
+                  height={20}
+                  width={20}
+                  unoptimized
+                />
               ) : (
                 user?.avatar || "??"
               )}

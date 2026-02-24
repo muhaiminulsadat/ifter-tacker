@@ -35,7 +35,7 @@ export default function NavbarClient({user}) {
   }
 
   const initials =
-    user.avatar ||
+    // user.avatar ||
     user.name
       ?.trim()
       .split(" ")
@@ -43,8 +43,7 @@ export default function NavbarClient({user}) {
       .map((w) => w[0])
       .slice(0, 2)
       .join("")
-      .toUpperCase() ||
-    "??";
+      .toUpperCase() || "??";
 
   const {data: session} = authClient.useSession();
 

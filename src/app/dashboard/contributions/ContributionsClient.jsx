@@ -5,6 +5,7 @@ import {Trash2, Loader2} from "lucide-react";
 import {deleteContribution} from "@/actions/contribution";
 import toast from "react-hot-toast";
 import AddContributionModal from "./AddContributionModal";
+import Image from "next/image";
 
 export default function ContributionsClient({
   log,
@@ -26,6 +27,8 @@ export default function ContributionsClient({
     });
   };
 
+
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between">
@@ -44,6 +47,7 @@ export default function ContributionsClient({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {perMember.map((m) => {
+
           const pct = Math.min((m.total / 600) * 100, 100);
           return (
             <div
@@ -55,6 +59,7 @@ export default function ContributionsClient({
                   <div className="avatar placeholder shrink-0">
                     <div className="w-10 h-10 rounded-xl bg-primary/10 border flex justify-center items-center border-primary/20 text-center text-primary text-[11px] font-bold">
                       {m.avatar}
+                      {/* <Image src={m?.image} alt="icon" height={25} width={25} /> */}
                     </div>
                   </div>
                   <div className="min-w-0">
